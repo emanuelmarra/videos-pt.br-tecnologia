@@ -1,0 +1,154 @@
+{
+  "hero-pizza": {
+    "width": 623,
+    "height": 873,
+    "src": "/images/hero-pizza-623.webp",
+    "avif": "/images/hero-pizza-623.avif 623w, /images/hero-pizza-1246.avif 1246w",
+    "webp": "/images/hero-pizza-623.webp 623w, /images/hero-pizza-1246.webp 1246w",
+    "blur": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAADQBACdASoQABYAPu1iqU2ppaOiMAgBMB2JagCdMoMh2sADXA3onzHQowY4cf8qYAD+9CU1turs+Esm/S1jhdh8IXLFVEPipr+7zYVDm26MGPoReQmE2o+RjVX63KFlTPvRMvtov9qaCWEWN7qrYLnz0V3yG5ZmSy0oc493AkAUGd6LgXDeAf6EBQlakd7I0BWqA4gAAAA="
+  },
+  "mesa-pizzas": {
+    "width": 391,
+    "height": 439,
+    "src": "/images/mesa-pizzas-391.webp",
+    "avif": "/images/mesa-pizzas-391.avif 391w, /images/mesa-pizzas-782.avif 782w",
+    "webp": "/images/mesa-pizzas-391.webp 391w, /images/mesa-pizzas-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABwBACdASoQABIAPu1iqU2ppaOiMAgBMB2JZACdMoMYAD9JWRtCNRtY1do7wAD+uUriN6DqjcMjX9iMWU9oiqGo+ENhN1Rkp9hVbTe5BTdbemllSE7PNSWlaU2nBtrTITPKLdV473gAAA=="
+  },
+  "queijo-derretido": {
+    "width": 391,
+    "height": 439,
+    "src": "/images/queijo-derretido-391.webp",
+    "avif": "/images/queijo-derretido-391.avif 391w, /images/queijo-derretido-782.avif 782w",
+    "webp": "/images/queijo-derretido-391.webp 391w, /images/queijo-derretido-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACwAwCdASoQABIAPu1iqU2ppaOiMAgBMB2JZACdAB5/oALDlkZ/aAD+9DLcK6TIdwUoAlxgMJF4O/tf9c4cpUpdCnQBsrethCChfj5+vbwztI9XRtM87dgOBOzcA/bxzsk/YZlSiX8gAAAA"
+  },
+  "nutella": {
+    "width": 391,
+    "height": 436,
+    "src": "/images/nutella-391.webp",
+    "avif": "/images/nutella-391.avif 391w, /images/nutella-782.avif 782w",
+    "webp": "/images/nutella-391.webp 391w, /images/nutella-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADQAwCdASoQABIAPu1iqU2ppaOiMAgBMB2JQBYdhHy1oiLZRncidIAA9hEA834ii7Me6ao71V4+ac1uojefxfGE1XyFsoGuYGM0MTHt3Z5Fz0A+reVADPuAAAA="
+  },
+  "salao": {
+    "width": 391,
+    "height": 439,
+    "src": "/images/salao-391.webp",
+    "avif": "/images/salao-391.avif 391w, /images/salao-782.avif 782w",
+    "webp": "/images/salao-391.webp 391w, /images/salao-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAADQAwCdASoQABIAPu1iqU2ppaQiMAgBMB2JQBOmUAA6PHTMvkFPigAA/tx9Pa0dexDM9cY20xkp/Yuxy2X27tA9hP2M8IF2OfyKj6/Z7o2RSax7Zg6kfdx4aMzW+CnGn1jQPeWItHAKXAAAAAA="
+  },
+  "fachada": {
+    "width": 391,
+    "height": 258,
+    "src": "/images/fachada-391.webp",
+    "avif": "/images/fachada-391.avif 391w, /images/fachada-782.avif 782w",
+    "webp": "/images/fachada-391.webp 391w, /images/fachada-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAQCdASoQAAsAA4BaJQBOgBnvlTVXQAD+tgXYiN0ybfJ5Fdc1/il7o84ohczUx11jXLHtKyl1Q2/tW3rhLN7/WVmWxBcMKAA="
+  },
+  "pizza-catupiry": {
+    "width": 381,
+    "height": 282,
+    "src": "/images/pizza-catupiry-381.webp",
+    "avif": "/images/pizza-catupiry-381.avif 381w, /images/pizza-catupiry-762.avif 762w",
+    "webp": "/images/pizza-catupiry-381.webp 381w, /images/pizza-catupiry-762.webp 762w",
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoQAAwAA4BaJbACdADGvRxFHQAA/oi8FIXd64l+w2Z30/YSOmk0R8HPmxGWMc1cMGpBfNvI1+N3qVv1piwAAA=="
+  },
+  "fatia-presunto": {
+    "width": 391,
+    "height": 439,
+    "src": "/images/fatia-presunto-391.webp",
+    "avif": "/images/fatia-presunto-391.avif 391w, /images/fatia-presunto-782.avif 782w",
+    "webp": "/images/fatia-presunto-391.webp 391w, /images/fatia-presunto-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwAwCdASoQABIAPu1iqU2ppaOiMAgBMB2JZgCdMoACm56YKVum+AD+uYvn1+2DVsXc/jqY1H7LihxJozp6NIXQ+fDtwFiR6GLfEfBnj9ITlFr49dMf5HsTFTAAAA=="
+  },
+  "doces-trio": {
+    "width": 391,
+    "height": 330,
+    "src": "/images/doces-trio-391.webp",
+    "avif": "/images/doces-trio-391.avif 391w, /images/doces-trio-782.avif 782w",
+    "webp": "/images/doces-trio-391.webp 391w, /images/doces-trio-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAA4AA4BaJYgCdAEfUfrqcHAA/u7zlJnbeGtuS2XrobARlx8T8l4VQc+lJB9NtyOPiJr3wC/NNrXGDLbYxAAA"
+  },
+  "pizza-entrega": {
+    "width": 391,
+    "height": 452,
+    "src": "/images/pizza-entrega-391.webp",
+    "avif": "/images/pizza-entrega-391.avif 391w, /images/pizza-entrega-782.avif 782w",
+    "webp": "/images/pizza-entrega-391.webp 391w, /images/pizza-entrega-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwBACdASoQABIAPu1iqU2ppaOiMAgBMB2JZgC7AB6XXwcGGwFjRgTjLwAA/mxHtXJhA1PzjF9eqdY006RIeG44HTo2ruOTDU3bJTtTkwpjd2mHzT/wvJ5pOjlsiqbxhIAAAA=="
+  },
+  "pedido-telefone": {
+    "width": 391,
+    "height": 521,
+    "src": "/images/pedido-telefone-391.webp",
+    "avif": "/images/pedido-telefone-391.avif 391w, /images/pedido-telefone-782.avif 782w",
+    "webp": "/images/pedido-telefone-391.webp 391w, /images/pedido-telefone-782.webp 782w",
+    "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABwBACdASoQABUAPu1kqU4ppaOiMAgBMB2JagCdMoACL1wRJf/y9OTi2nB7gAD+EftnWqSjdSUwztsfgpsZsTrPNFamb43EE5vG+yps7vHLvdDAk9CnwTmJcHuip9F3IvQ/Gf+kIFI1rVEgriWtMAAA"
+  },
+  "marguerita": {
+    "width": 430,
+    "height": 430,
+    "src": "/images/marguerita-430.webp",
+    "avif": "/images/marguerita-430.avif 430w",
+    "webp": "/images/marguerita-430.webp 430w",
+    "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwAgCdASoQABAAA4BaJbACdLoAAubrqv10oAD+6k26D57SJUh2V0Exblshvgw7fT2UbcXNM+ISy/IPxfzq73oOQbAA8e6buWBV4SWtb5kDhLBi5Lu9dDGQDw+gf7XX4/ISSi+DgAA="
+  },
+  "nutella-thumb": {
+    "width": 371,
+    "height": 371,
+    "src": "/images/nutella-thumb-371.webp",
+    "avif": "/images/nutella-thumb-371.avif 371w",
+    "webp": "/images/nutella-thumb-371.webp 371w",
+    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQABAAA4BaJaACdADp9jL5OiYAzjpTygoBZ3NkxR0p0gdVAkqaxL8U/IUFFxfYHgnnziq/a8szhrxwztWzBmAAAAA="
+  },
+  "portuguesa": {
+    "width": 250,
+    "height": 250,
+    "src": "/images/portuguesa-250.webp",
+    "avif": "/images/portuguesa-250.avif 250w",
+    "webp": "/images/portuguesa-250.webp 250w",
+    "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoQABAAA4BaJbACdAywCqsyEAD7pEd3AX4VKwASnqjMY+uBP1IsVZxpoU2dVAtdVshvLKu/wtKJDzbyNwWWnYEz9hvwAA=="
+  },
+  "carne-seca": {
+    "width": 270,
+    "height": 270,
+    "src": "/images/carne-seca-270.webp",
+    "avif": "/images/carne-seca-270.avif 270w",
+    "webp": "/images/carne-seca-270.webp 270w",
+    "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAwAgCdASoQABAAA4BaJbACdLoAAlNtcPQfgAD2mRRvsHq2jQJyPYR99QKdTPBDzrYT9cM+YNLOkllJJd1fWS7KCv4r7JaSoF5y+vPUwffieK/8gAA="
+  },
+  "frango-catupiry": {
+    "width": 320,
+    "height": 320,
+    "src": "/images/frango-catupiry-320.webp",
+    "avif": "/images/frango-catupiry-320.avif 320w",
+    "webp": "/images/frango-catupiry-320.webp 320w",
+    "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoQABAAA4BaJbACdADB/TeTgAD+QPIj1mTk9pPUfc7pkkGaCVmSvlkyxo6F5l1JL5Jbd/evMftVLWHW/iU3bmvD1a5exgAA"
+  },
+  "brigadeiro": {
+    "width": 200,
+    "height": 200,
+    "src": "/images/brigadeiro-200.webp",
+    "avif": "/images/brigadeiro-200.avif 200w",
+    "webp": "/images/brigadeiro-200.webp 200w",
+    "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABQAgCdASoQABAAA4BaJZACdAD7j9KqMuSPSAAA/vGG0ttshf1bqr4iZs0baPkMViSMIR48snYZO3lRxYV+5mFGeRsmV+/bpV8N3sAA"
+  },
+  "mesclada": {
+    "width": 210,
+    "height": 210,
+    "src": "/images/mesclada-210.webp",
+    "avif": "/images/mesclada-210.avif 210w",
+    "webp": "/images/mesclada-210.webp 210w",
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoQABAAA4BaJYgCdADPOIAAAP6i0qBZnlH7ByQGvBkBK+3WVnpVmN09hmecZpb3LRSKKvV5XAAAAA=="
+  },
+  "oreo": {
+    "width": 196,
+    "height": 196,
+    "src": "/images/oreo-196.webp",
+    "avif": "/images/oreo-196.avif 196w",
+    "webp": "/images/oreo-196.webp 196w",
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAwAgCdASoQABAAA4BaJZACdAEfbjsRNg+TgAD+0gN+VrH38Fclsitc1sXlrFc722mmzlFiKroPC6HrLsoGuJAA"
+  }
+}

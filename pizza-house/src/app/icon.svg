@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d8a865"/>
+      <stop offset="1" stop-color="#b07a3c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#171412"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="13.5" fill="none" stroke="#C18B4A" stroke-opacity=".35"/>
+  <g fill="none" stroke="url(#g)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- pizza inteira com uma fatia servida (inspirada no ícone do logotipo) -->
+    <path d="M32 35 L32 15.5 A19.5 19.5 0 1 1 15.1 25.25 Z" stroke-width="3.2"/>
+    <path d="M32 35 L46.6 47.9 M32 35 L51.4 37.7 M32 35 L22.6 51.9" stroke-width="2.2"/>
+    <!-- fatia levantada -->
+    <path d="M28.6 30.6 L28.6 11.6 A19.5 19.5 0 0 0 11.8 21.3 Z" stroke-width="3.2"/>
+  </g>
+  <g fill="#d8a865">
+    <circle cx="39" cy="27" r="2.3"/><circle cx="43.6" cy="34" r="2"/><circle cx="38" cy="42.6" r="2.2"/>
+    <circle cx="27" cy="44.6" r="2"/><circle cx="23.4" cy="36.6" r="2.1"/><circle cx="22" cy="21.6" r="1.9"/>
+  </g>
+</svg>
