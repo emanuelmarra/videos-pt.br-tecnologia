@@ -11,6 +11,7 @@ import { SliceDiagram } from "@/components/ui/SliceDiagram";
 import { ButtonLink } from "@/components/ui/Button";
 import { categories, flavors, menuNotes, sizes, type Category, type Flavor } from "@/data/menu";
 import { formatPrice } from "@/lib/format";
+import { asset } from "@/lib/images";
 import { external, whatsappLink, whatsappMessages } from "@/lib/whatsapp";
 import { cn } from "@/lib/cn";
 
@@ -169,7 +170,7 @@ function FlavorCard({ flavor }: { flavor: Flavor }) {
         ) : flavor.illustration ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`/images/ilustracoes/${flavor.illustration}.svg`}
+            src={asset(`/images/ilustracoes/${flavor.illustration}.svg`)}
             alt={`Ilustração de pizza de ${flavor.name}`}
             width={200}
             height={200}

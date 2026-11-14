@@ -13,13 +13,10 @@ export function JsonLd() {
   const restaurant = {
     "@context": "https://schema.org",
     "@type": "Restaurant",
-    "@id": `${url}/#restaurante`,
+    ...(url ? { "@id": `${url}/#restaurante`, url: `${url}/`, image: [`${url}/og-image.jpg`], logo: `${url}/brand/icon-512.png` } : {}),
     name: site.name,
     alternateName: site.legalName,
     description: site.description,
-    url: `${url}/`,
-    image: [`${url}/og-image.jpg`],
-    logo: `${url}/brand/icon-512.png`,
     telephone: site.phone.e164,
     servesCuisine: ["Pizza", "Pizza artesanal", "Pizza doce"],
     foundingDate: String(site.foundedYear),
@@ -44,7 +41,7 @@ export function JsonLd() {
     hasMenu: {
       "@type": "Menu",
       name: "Cardápio Pizza House",
-      url: `${url}/#cardapio`,
+      ...(url ? { url: `${url}/#cardapio` } : {}),
       hasMenuSection: (["salgadas", "doces"] as const).map((cat) => ({
         "@type": "MenuSection",
         name: cat === "salgadas" ? "Pizzas salgadas" : "Pizzas doces",
@@ -56,20 +53,22 @@ export function JsonLd() {
     ...(site.social.instagram ? { sameAs: [site.social.instagram] } : {}),
   };
 
-  const website = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${url}/#site`,
-    name: `${site.name} Divinópolis`,
-    url: `${url}/`,
-    inLanguage: "pt-BR",
-    publisher: { "@id": `${url}/#restaurante` },
-  };
+  const website = url
+    ? {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${url}/#site`,
+        name: `${site.name} Divinópolis`,
+        url: `${url}/`,
+        inLanguage: "pt-BR",
+        publisher: { "@id": `${url}/#restaurante` },
+      }
+    : null;
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify([restaurant, website]).replace(/</g, "\\u003c") }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(website ? [restaurant, website] : [restaurant]).replace(/</g, "\\u003c") }}
     />
   );
 }

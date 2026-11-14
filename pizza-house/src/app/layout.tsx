@@ -29,7 +29,7 @@ const sans = localFont({
 const title = "Pizza House | Pizzaria Artesanal em Divinópolis — MG";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  ...(site.url ? { metadataBase: new URL(site.url), alternates: { canonical: "/" } } : {}),
   title: { default: title, template: "%s | Pizza House Divinópolis" },
   description: site.description,
   applicationName: site.name,
@@ -47,21 +47,22 @@ export const metadata: Metadata = {
   creator: site.name,
   publisher: site.name,
   category: "restaurant",
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "/",
+    ...(site.url ? { url: "/" } : {}),
     siteName: `${site.name} Divinópolis`,
     title,
     description: site.description,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Pizza House — pizzaria artesanal em Divinópolis, MG" }],
+    ...(site.url
+      ? { images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Pizza House — pizzaria artesanal em Divinópolis, MG" }] }
+      : {}),
   },
   twitter: {
     card: "summary_large_image",
     title,
     description: site.description,
-    images: ["/og-image.jpg"],
+    ...(site.url ? { images: ["/og-image.jpg"] } : {}),
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
   formatDetection: { telephone: true, address: false, email: false },

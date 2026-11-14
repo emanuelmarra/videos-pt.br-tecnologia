@@ -20,11 +20,11 @@ export const site = {
    *   por exemplo: https://www.seudominio.com.br
    */
   url: (
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`) ?? // Vercel
-    process.env.URL ?? // Netlify
-    process.env.CF_PAGES_URL ?? // Cloudflare Pages
-    "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") || // Vercel
+    process.env.URL || // Netlify
+    process.env.CF_PAGES_URL || // Cloudflare Pages
+    "" // sem domínio definido: as tags que exigem endereço absoluto são omitidas
   ).replace(/\/$/, ""),
 
   /** Telefone exibido no site e usado no link "Ligar". */

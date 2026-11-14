@@ -19,14 +19,24 @@ npm run build      # gera o site estático final na pasta out/
 npm run start      # serve a pasta out/ localmente para conferência
 ```
 
+## Pacote pronto (.zip)
+
+```bash
+npm run pacote     # gera dist/pizza-house-site.zip
+```
+
+O pacote usa caminhos relativos e fontes embutidas: abre com **duplo clique em `index.html`** (sem servidor)
+e também pode ser enviado direto para a hospedagem. Para incluir o domínio definitivo no SEO:
+`NEXT_PUBLIC_SITE_URL=https://www.seudominio.com.br npm run pacote`.
+
 ## Publicação
 
 O build gera HTML/CSS/JS estáticos em `out/`, que podem ir para qualquer hospedagem:
 
 - **Vercel / Netlify / Cloudflare Pages:** importe o repositório, defina a pasta raiz como `pizza-house`,
   comando `npm run build` e diretório de saída `out`.
-- **Hospedagem tradicional (Hostinger, cPanel etc.):** rode `npm run build` e envie o conteúdo de `out/`
-  para a pasta pública (`public_html`).
+- **Hospedagem tradicional (Hostinger, cPanel etc.) ou Netlify Drop:** envie o conteúdo do pacote
+  (`npm run pacote`) ou da pasta `out/` para a pasta pública (`public_html`).
 
 **Importante:** defina a variável de ambiente `NEXT_PUBLIC_SITE_URL` com o domínio final
 (ex.: `https://www.seudominio.com.br`) antes do build. Ela é usada no SEO, no sitemap e na imagem de compartilhamento.
@@ -52,7 +62,8 @@ O site não simula pedidos: tudo é finalizado no WhatsApp da pizzaria.
 1. **Endereço** — "R. Ibirité, 230 — Bom Pastor" foi lido do card do Google publicado no Instagram da pizzaria.
    Confirme em `src/config/site.ts` (deixe vazio para ocultar). O CEP também pode ser adicionado lá.
 2. **Instagram oficial** — preencha `social.instagram` e `social.instagramHandle`. Enquanto estiver vazio, os links ficam ocultos.
-3. **Domínio** — variável `NEXT_PUBLIC_SITE_URL` (veja acima).
+3. **Domínio** — variável `NEXT_PUBLIC_SITE_URL` (veja acima). Sem ela, o site funciona normalmente, mas as tags que
+   exigem endereço completo (link canônico, sitemap, imagem de compartilhamento) ficam de fora.
 4. **Descrições dos sabores** — seguem a receita tradicional de cada pizza; revise os ingredientes em `src/data/menu.ts`.
 5. **Fotos dos sabores sem foto própria** — Calabresa, Quatro Queijos, 5 Queijos, Costela Premium, Pepperoni e KitKat
    usam ilustrações. Envie as fotos para substituí-las (veja abaixo).
