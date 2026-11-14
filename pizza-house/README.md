@@ -30,6 +30,7 @@ O build gera HTML/CSS/JS estáticos em `out/`, que podem ir para qualquer hosped
 
 **Importante:** defina a variável de ambiente `NEXT_PUBLIC_SITE_URL` com o domínio final
 (ex.: `https://www.seudominio.com.br`) antes do build. Ela é usada no SEO, no sitemap e na imagem de compartilhamento.
+Na Vercel, Netlify e Cloudflare Pages o endereço do projeto é detectado automaticamente se a variável não for definida.
 
 ## Onde editar o conteúdo
 

@@ -19,11 +19,13 @@ export const site = {
    * ➜ Defina a variável de ambiente NEXT_PUBLIC_SITE_URL na hospedagem,
    *   por exemplo: https://www.seudominio.com.br
    */
-  url:
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "http://localhost:3000"),
+  url: (
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`) ?? // Vercel
+    process.env.URL ?? // Netlify
+    process.env.CF_PAGES_URL ?? // Cloudflare Pages
+    "http://localhost:3000"
+  ).replace(/\/$/, ""),
 
   /** Telefone exibido no site e usado no link "Ligar". */
   phone: {
