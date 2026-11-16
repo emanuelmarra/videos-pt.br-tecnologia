@@ -159,6 +159,7 @@ export function Header() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
+            data-lenis-prevent=""
             className="bg-wood fixed inset-0 z-40 flex h-[100dvh] flex-col overflow-y-auto px-6 pb-10 pt-28 lg:hidden"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}

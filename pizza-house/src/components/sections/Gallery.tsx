@@ -1,12 +1,11 @@
 "use client";
 
-import { AnimatePresence, m, type PanInfo } from "framer-motion";
-import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
+import { AnimatePresence, m, useMotionTemplate, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform, type PanInfo } from "framer-motion";
+import { ChevronLeft, ChevronRight, Move, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ButtonLink } from "@/components/ui/Button";
 import { InstagramIcon } from "@/components/ui/icons";
 import { Picture } from "@/components/ui/Picture";
-import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { site } from "@/config/site";
 import { gallery } from "@/data/gallery";
@@ -14,77 +13,160 @@ import { useLockBodyScroll } from "@/lib/hooks";
 import { getImage } from "@/lib/images";
 import { cn } from "@/lib/cn";
 
-const layout: Record<string, string> = {
-  tall: "lg:row-span-2",
-  wide: "lg:col-span-2",
-};
+const N = gallery.length;
+const STEP = 360 / N;
 
+/**
+ * Galeria em carrossel 3D: as fotos formam um anel que gira com a rolagem
+ * (e com o arrasto). Clique em uma foto para ampliar.
+ */
 export function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
+  const [front, setFront] = useState(0);
   const lastTrigger = useRef<HTMLButtonElement | null>(null);
+  const section = useRef<HTMLElement>(null);
+  const cards = useRef<(HTMLDivElement | null)[]>([]);
+  const dragState = useRef({ active: false, startX: 0, start: 0, moved: false });
+
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  const scrollRot = useTransform(scrollYProgress, [0.05, 0.95], [0, -(360 - STEP)]);
+  const drag = useMotionValue(0);
+  const rot = useMotionValue(0);
+  const smoothRot = useSpring(rot, { stiffness: 80, damping: 20, mass: 0.7 });
+  useMotionValueEvent(scrollRot, "change", (v) => rot.set(v + drag.get()));
+  useMotionValueEvent(drag, "change", (v) => rot.set(scrollRot.get() + v));
+
+  const paint = useCallback((r: number) => {
+    let best = 0;
+    let bestCos = -2;
+    cards.current.forEach((el, i) => {
+      if (!el) return;
+      const ang = ((((i * STEP + r) % 360) + 540) % 360) - 180;
+      const c = Math.cos((ang * Math.PI) / 180);
+      el.style.filter = `brightness(${(0.42 + 0.58 * Math.max(0, c)).toFixed(3)})`;
+      el.style.opacity = c < -0.25 ? "0.28" : "1";
+      el.style.zIndex = String(Math.round((c + 1) * 50));
+      if (c > bestCos) {
+        bestCos = c;
+        best = i;
+      }
+    });
+    setFront((f) => (f === best ? f : best));
+  }, []);
+  useMotionValueEvent(smoothRot, "change", paint);
+  useEffect(() => paint(0), [paint]);
+
+  const ringTransform = useMotionTemplate`translateZ(calc(var(--radius) * -1)) rotateX(-7deg) rotateY(${smoothRot}deg)`;
+
+  // arrastar para girar (mouse e toque horizontal)
+  useEffect(() => {
+    const move = (e: PointerEvent) => {
+      const d = dragState.current;
+      if (!d.active) return;
+      const dx = e.clientX - d.startX;
+      if (Math.abs(dx) > 6) d.moved = true;
+      drag.set(d.start + dx * 0.28);
+    };
+    const up = () => {
+      dragState.current.active = false;
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+    };
+  }, [drag]);
+
+  const current = gallery[front];
 
   return (
-    <section id="galeria" aria-labelledby="galeria-titulo" className="bg-paper section-pad relative overflow-hidden text-espresso">
-      <div className="container-site">
-        <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-          <SectionHeading
-            id="galeria-titulo"
-            tone="light"
-            eyebrow="Galeria"
-            title={
-              <>
-                Feita para ser vista. <em className="text-wood">E saboreada.</em>
-              </>
-            }
-            className="max-w-2xl"
-          />
-          {site.social.instagram && (
-            <ButtonLink href={site.social.instagram} variant="outline-dark" icon={<InstagramIcon size={18} />}>
-              Siga no Instagram
-            </ButtonLink>
-          )}
+    <section id="galeria" ref={section} aria-labelledby="galeria-titulo" className="bg-paper relative h-[300vh] text-espresso lg:h-[340vh]">
+      <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_58%,rgb(255_249_240/0.95),transparent_70%)]" aria-hidden="true" />
+        <div className="container-site relative pt-24 sm:pt-28">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <SectionHeading
+              id="galeria-titulo"
+              tone="light"
+              eyebrow="Galeria"
+              title={
+                <>
+                  Feita para ser vista. <em className="text-wood">E saboreada.</em>
+                </>
+              }
+              className="max-w-2xl [&_h2]:text-[2.3rem] sm:[&_h2]:text-5xl lg:[&_h2]:text-[3.6rem]"
+            />
+            {site.social.instagram && (
+              <ButtonLink href={site.social.instagram} variant="outline-dark" icon={<InstagramIcon size={18} />}>
+                Siga no Instagram
+              </ButtonLink>
+            )}
+          </div>
         </div>
 
-        <RevealGroup
-          className="mt-14 grid auto-rows-[10.5rem] grid-flow-dense grid-cols-2 gap-3 sm:auto-rows-[15rem] sm:gap-4 lg:mt-16 lg:auto-rows-[13.5rem] lg:grid-cols-4 xl:auto-rows-[15rem]"
-          stagger={0.07}
-          amount={0.05}
+        <div
+          className="ring-stage relative min-h-0 flex-1 touch-pan-y select-none [--card-w:190px] [--radius:330px] sm:[--card-w:240px] sm:[--radius:420px] lg:[--card-w:290px] lg:[--radius:520px]"
+          onPointerDown={(e) => {
+            dragState.current = { active: true, startX: e.clientX, start: drag.get(), moved: false };
+          }}
+          data-cursor="Arraste"
         >
-          {gallery.map((item, i) => (
-            <RevealItem
-              key={item.image}
-              className={cn(
-                item.span && layout[item.span],
-                item.mobileWide && (item.span === "wide" ? "col-span-2" : "col-span-2 lg:col-span-1"),
-              )}
-            >
-              <button
-                type="button"
-                onClick={(e) => {
-                  lastTrigger.current = e.currentTarget;
-                  setIndex(i);
+          <span className="pointer-events-none absolute bottom-[8%] left-1/2 h-10 w-[70%] max-w-3xl -translate-x-1/2 rounded-[50%] bg-espresso/25 blur-2xl" aria-hidden="true" />
+          <m.div className="ring absolute left-1/2 top-[48%] h-0 w-0" style={{ transform: ringTransform }}>
+            {gallery.map((item, i) => (
+              <div
+                key={item.image}
+                ref={(el) => void (cards.current[i] = el)}
+                className="ring-card absolute"
+                style={{
+                  width: "var(--card-w)",
+                  height: "calc(var(--card-w) * 1.3)",
+                  left: "calc(var(--card-w) / -2)",
+                  top: "calc(var(--card-w) * -0.65)",
+                  transform: `rotateY(${i * STEP}deg) translateZ(var(--radius))`,
                 }}
-                className="group relative block h-full w-full overflow-hidden rounded-2xl bg-espresso/10 text-left shadow-[0_20px_40px_-28px_rgb(40_23_15/0.7)] ring-1 ring-wood/10"
-                aria-label={`Ampliar foto: ${item.caption}`}
               >
-                <Picture
-                  image={item.image}
-                  alt={item.alt}
-                  sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="h-full w-full"
-                  imgClassName="transition-transform duration-[1.4s] ease-[var(--ease-premium)] group-hover:scale-[1.07]"
-                />
-                <span className="absolute inset-0 bg-linear-to-t from-ink/75 via-ink/0 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true" />
-                <span className="absolute inset-x-4 bottom-3.5 flex translate-y-1 items-end justify-between gap-3 transition-transform duration-500 group-hover:translate-y-0 sm:inset-x-5 sm:bottom-4">
-                  <span className="font-serif text-lg leading-tight text-cream sm:text-xl">{item.caption}</span>
-                  <span className="grid size-9 shrink-0 scale-75 place-items-center rounded-full bg-cream/90 text-ink opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100" aria-hidden="true">
-                    <Expand size={15} />
-                  </span>
-                </span>
-              </button>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+                <button
+                  type="button"
+                  data-cursor="Ver"
+                  onClick={(e) => {
+                    if (dragState.current.moved) return;
+                    lastTrigger.current = e.currentTarget;
+                    setIndex(i);
+                  }}
+                  className="group relative block h-full w-full overflow-hidden rounded-2xl bg-espresso/10 text-left shadow-[0_30px_60px_-30px_rgb(40_23_15/0.8)] ring-1 ring-wood/15"
+                  aria-label={`Ampliar foto: ${item.caption}`}
+                >
+                  <Picture
+                    image={item.image}
+                    alt={item.alt}
+                    sizes="(min-width: 1024px) 290px, (min-width: 640px) 240px, 190px"
+                    className="pointer-events-none h-full w-full"
+                    imgClassName="transition-transform duration-[1.4s] ease-[var(--ease-premium)] group-hover:scale-[1.07]"
+                  />
+                  <span className="absolute inset-0 bg-linear-to-t from-ink/70 via-transparent to-transparent" aria-hidden="true" />
+                  <span className="absolute inset-x-4 bottom-3 font-serif text-lg leading-tight text-cream sm:text-xl">{item.caption}</span>
+                </button>
+              </div>
+            ))}
+          </m.div>
+        </div>
+
+        <div className="container-site relative flex items-end justify-between gap-6 pb-8 sm:pb-10">
+          <div aria-live="polite">
+            <p className="text-[0.68rem] font-bold uppercase tracking-[0.26em] text-wood tabular-nums">
+              {String(front + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
+            </p>
+            <p className="mt-1 font-serif text-2xl leading-tight text-espresso sm:text-3xl">{current.caption}</p>
+          </div>
+          <p className="hidden items-center gap-2 text-xs font-medium text-[#5b4232] sm:flex">
+            <Move size={15} className="text-wood" aria-hidden="true" />
+            Role ou arraste para girar
+          </p>
+        </div>
       </div>
 
       <Lightbox
@@ -154,6 +236,7 @@ function Lightbox({ index, onClose, onChange }: { index: number | null; onClose:
           role="dialog"
           aria-modal="true"
           aria-label={`Galeria de fotos: ${item.caption}`}
+          data-lenis-prevent=""
           className="fixed inset-0 z-[70] flex flex-col bg-char/95 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

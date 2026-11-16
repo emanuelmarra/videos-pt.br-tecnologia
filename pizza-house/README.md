@@ -4,7 +4,21 @@ Site oficial da **Pizza House**, pizzaria artesanal em Divinópolis — MG.
 Página única, com foco em conversão pelo WhatsApp: hero, nossa história, diferenciais, cardápio interativo,
 tamanhos e preços, Combo Casal, galeria com lightbox, avaliações, reservas, localização e rodapé.
 
-**Stack:** Next.js 16 (exportação estática) · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion · Lucide Icons
+**Stack:** Next.js 16 (exportação estática) · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion · Three.js
+(React Three Fiber) · Lenis · Lucide Icons
+
+### Experiência imersiva (versão 2)
+
+- **Pizza 3D interativa** (`src/components/three/`): marguerita modelada em tempo real — massa, borda tostada, molho,
+  queijo gratinado, tomates, manjericão e muçarela, sobre tábua de madeira. Segue o mouse no hero.
+- **Seção "experiência"** (`src/components/sections/Story.tsx`): fica fixa na tela enquanto a pizza se desmonta em camadas
+  conforme a rolagem — 01 massa · 02 molho e queijo · 03 ingredientes · 04 fatias se abrem e uma é "servida".
+- **Galeria em carrossel 3D**: as fotos formam um anel que gira com a rolagem e com o arrasto; clique para ampliar.
+- **Detalhes:** rolagem suave com inércia (desktop), títulos revelados palavra por palavra, cursor com rótulos ("Ver",
+  "Arraste"), botões magnéticos, faixa de texto em movimento.
+- **Desempenho e acessibilidade:** o 3D carrega depois do conteúdo e só roda em aparelhos com aceleração de vídeo; nos
+  demais (e em máquinas sem placa de vídeo) aparece a fotografia da marguerita. Com "reduzir movimento" ativado, as
+  animações automáticas são desligadas. Para forçar o 3D em testes, abra o site com `?3d=1` no endereço.
 
 ---
 
@@ -101,4 +115,4 @@ public/images/      versões otimizadas (AVIF + WebP, 1x e 2x) geradas automatic
 - Imagens com AVIF/WebP, `srcset`, carregamento sob demanda e placeholder borrado; CSS crítico embutido
 - Animações respeitam a preferência "reduzir movimento" do sistema; o mapa do Google só carrega após o clique
 - Acessibilidade: navegação por teclado, foco visível, menu e lightbox com foco preso, textos alternativos
-- Lighthouse (build local com gzip): Acessibilidade 100 · Boas práticas 100 · SEO 100 · Desempenho 91 (desktop) / 81 (mobile simulado)
+- Lighthouse (build local com gzip): Acessibilidade 100 · Boas práticas 100 · SEO 100 · Desempenho 99 (desktop) / 91 (mobile simulado)

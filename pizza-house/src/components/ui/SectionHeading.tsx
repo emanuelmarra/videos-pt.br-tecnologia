@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Reveal } from "./Reveal";
+import { SplitReveal } from "./SplitReveal";
 
 export function Eyebrow({ children, tone = "dark", className, centered }: { children: ReactNode; tone?: "dark" | "light"; className?: string; centered?: boolean }) {
   return (
@@ -39,17 +40,12 @@ export function SectionHeading({ eyebrow, title, intro, tone = "dark", align = "
           {eyebrow}
         </Eyebrow>
       </Reveal>
-      <Reveal delay={0.08}>
-        <h2
-          id={id}
-          className={cn(
-            "mt-5 text-[2.6rem] leading-[1.02] sm:text-5xl lg:text-[4.1rem]",
-            tone === "dark" ? "text-cream" : "text-espresso",
-          )}
-        >
-          {title}
-        </h2>
-      </Reveal>
+      <h2
+        id={id}
+        className={cn("mt-5 text-[2.6rem] leading-[1.02] sm:text-5xl lg:text-[4.1rem]", tone === "dark" ? "text-cream" : "text-espresso")}
+      >
+        <SplitReveal delay={0.08}>{title}</SplitReveal>
+      </h2>
       {intro && (
         <Reveal delay={0.16}>
           <p className={cn("mt-6 text-base leading-relaxed sm:text-lg", tone === "dark" ? "text-cream/70" : "text-[#5b4232]", centered && "mx-auto max-w-2xl")}>

@@ -1,4 +1,9 @@
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { Marquee } from "@/components/sections/Marquee";
+import { Story } from "@/components/sections/Story";
+import { ExperienceBackdrop } from "@/components/three/ExperienceBackdrop";
+import { Cursor } from "@/components/ui/Cursor";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { About } from "@/components/sections/About";
@@ -15,9 +20,13 @@ import { Reviews } from "@/components/sections/Reviews";
 export default function Home() {
   return (
     <>
+      <SmoothScroll />
+      <ExperienceBackdrop />
       <Header />
       <main id="conteudo">
         <Hero />
+        <Story />
+        <Marquee />
         <About />
         <Features />
         <Menu />
@@ -30,6 +39,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <Cursor />
     </>
   );
 }
