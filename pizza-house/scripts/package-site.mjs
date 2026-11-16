@@ -20,7 +20,8 @@ const DIST = path.join(ROOT, "dist");
 const NAME = "pizza-house-site";
 const STAGE = path.join(DIST, NAME);
 
-await rm(DIST, { recursive: true, force: true });
+await rm(STAGE, { recursive: true, force: true });
+await rm(path.join(DIST, `${NAME}.zip`), { force: true });
 await mkdir(DIST, { recursive: true });
 await cp(OUT, STAGE, { recursive: true });
 
