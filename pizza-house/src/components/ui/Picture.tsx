@@ -18,14 +18,14 @@ export function Picture({ image, alt, sizes, className, imgClassName, priority, 
   const img = getImage(image);
   return (
     <picture className={cn("block", className)}>
-      <source type="image/avif" srcSet={img.avif} sizes={sizes} />
-      <source type="image/webp" srcSet={img.webp} sizes={sizes} />
+      {img.avif && <source type="image/avif" srcSet={img.avif} sizes={sizes} />}
+      {img.webp && <source type="image/webp" srcSet={img.webp} sizes={sizes} />}
       <img
         src={img.src}
         alt={alt}
         width={img.width}
         height={img.height}
-        sizes={sizes}
+        sizes={img.webp ? sizes : undefined}
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
         fetchPriority={priority ? "high" : "auto"}

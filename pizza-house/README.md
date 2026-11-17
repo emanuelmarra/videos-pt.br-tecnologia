@@ -46,6 +46,16 @@ O pacote usa caminhos relativos e fontes embutidas: abre com **duplo clique em `
 e também pode ser enviado direto para a hospedagem. Para incluir o domínio definitivo no SEO:
 `NEXT_PUBLIC_SITE_URL=https://www.seudominio.com.br npm run pacote`.
 
+## Arquivo único (.html)
+
+```bash
+npm run arquivo-unico   # gera dist/pizza-house.html (~4 MB)
+```
+
+O site inteiro em **um só arquivo HTML** — fotos, fontes, estilos, animações, cardápio interativo e a pizza 3D embutidos.
+Abre com duplo clique, no navegador do celular ou dentro de apps de chat, sem servidor e sem descompactar nada.
+Se o visualizador bloquear scripts, o conteúdo e as fotos continuam aparecendo (sem as animações).
+
 ## Publicação
 
 O build gera HTML/CSS/JS estáticos em `out/`, que podem ir para qualquer hospedagem:

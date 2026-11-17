@@ -119,13 +119,22 @@ export function ExperienceBackdrop() {
         </div>
       )}
 
-      {mode === "photo" && (
-        <div className="absolute inset-x-0 top-0 h-[62%] animate-[fade-in_1.2s_ease-out_both] lg:inset-y-0 lg:left-auto lg:h-full lg:w-[52%]">
-          <Picture image="hero-pizza" alt="" sizes="(min-width: 1024px) 52vw, 100vw" className="h-full w-full" imgClassName="object-[30%_50%] lg:object-left" />
-          <div className="absolute inset-0 bg-linear-to-t from-[#070504] via-[#070504]/30 to-transparent lg:bg-linear-to-r lg:via-transparent" />
-          <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-[#070504]/75 to-transparent" />
-        </div>
-      )}
+      {mode === "photo" && <PhotoFallback />}
+      {/* sem JavaScript (ex.: visualizadores que bloqueiam scripts): a fotografia aparece direto */}
+      <noscript>
+        <PhotoFallback />
+      </noscript>
+    </div>
+  );
+}
+
+/** Fotografia da marguerita no lugar da cena 3D. */
+function PhotoFallback() {
+  return (
+    <div className="absolute inset-x-0 top-0 h-[62%] animate-[fade-in_1.2s_ease-out_both] lg:inset-y-0 lg:left-auto lg:h-full lg:w-[52%]">
+      <Picture image="hero-pizza" alt="" sizes="(min-width: 1024px) 52vw, 100vw" className="h-full w-full" imgClassName="object-[30%_50%] lg:object-left" />
+      <div className="absolute inset-0 bg-linear-to-t from-[#070504] via-[#070504]/30 to-transparent lg:bg-linear-to-r lg:via-transparent" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-[#070504]/75 to-transparent" />
     </div>
   );
 }

@@ -12,7 +12,8 @@
     "photos": "python3 scripts/prepare_photos.py && npm run images",
     "illustrations": "tsx scripts/build-illustrations.tsx",
     "pacote": "NEXT_PUBLIC_RELATIVE_ASSETS=1 next build && node scripts/package-site.mjs && next build",
-    "textures": "node scripts/build-textures.mjs"
+    "textures": "node scripts/build-textures.mjs",
+    "arquivo-unico": "node scripts/single-file.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import { LogoSprite } from "@/components/brand/Logo";
 import { MotionProvider } from "@/components/layout/MotionProvider";
-import { introScript, Preloader } from "@/components/layout/Preloader";
+import { introScript, Preloader, safetyScript } from "@/components/layout/Preloader";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/config/site";
 import "./globals.css";
@@ -83,7 +83,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
       <body className="grain">
-        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+        <script dangerouslySetInnerHTML={{ __html: introScript + ";" + safetyScript }} />
         <noscript>
           <style>{"[data-reveal]{opacity:1!important;transform:none!important}.preloader{display:none!important}"}</style>
         </noscript>
