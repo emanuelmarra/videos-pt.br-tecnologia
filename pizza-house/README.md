@@ -14,11 +14,14 @@ tamanhos e preços, Combo Casal, galeria com lightbox, avaliações, reservas, l
 - **Seção "experiência"** (`src/components/sections/Story.tsx`): fica fixa na tela enquanto a pizza se desmonta em camadas
   conforme a rolagem — 01 massa · 02 molho e queijo · 03 ingredientes · 04 fatias se abrem e uma é "servida".
 - **Galeria em carrossel 3D**: as fotos formam um anel que gira com a rolagem e com o arrasto; clique para ampliar.
-- **Detalhes:** rolagem suave com inércia (desktop), títulos revelados palavra por palavra, cursor com rótulos ("Ver",
-  "Arraste"), botões magnéticos, faixa de texto em movimento.
-- **Desempenho e acessibilidade:** o 3D carrega depois do conteúdo e só roda em aparelhos com aceleração de vídeo; nos
-  demais (e em máquinas sem placa de vídeo) aparece a fotografia da marguerita. Com "reduzir movimento" ativado, as
-  animações automáticas são desligadas. Para forçar o 3D em testes, abra o site com `?3d=1` no endereço.
+- **Detalhes:** títulos revelados palavra por palavra, cursor com rótulos ("Ver", "Arraste"), botões magnéticos, faixa
+  de texto em movimento. A rolagem é a nativa do navegador (sempre fluida, independente do 3D).
+- **Desempenho:** a cena 3D só é desenhada quando há rolagem ou movimento do mouse (parada, não consome processamento);
+  as texturas são imagens leves pré-geradas (`npm run textures`); a resolução é limitada em telas grandes. O 3D carrega
+  depois do conteúdo e só roda em aparelhos com aceleração de vídeo; ao abrir, o site mede a fluidez e, se o aparelho
+  não sustentar ~24 quadros por segundo, troca automaticamente o 3D pela fotografia da marguerita.
+- **Parâmetros de teste:** `?3d=1` força o 3D sem checagens; `?3d=teste` pula só a checagem de placa de vídeo (mantém a
+  de fluidez). Com "reduzir movimento" ativado no sistema, as animações automáticas são desligadas.
 
 ---
 

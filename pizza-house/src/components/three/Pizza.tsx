@@ -1,10 +1,14 @@
 "use client";
 
+import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import { cheeseTexture, crustTexture, doughTexture, shadowTexture, woodTexture } from "./textures";
+import { asset } from "@/lib/images";
 import { experience, range } from "./state";
+
+/** Texturas pré-renderizadas (npm run textures) — o aparelho só baixa, não desenha. */
+const TEXTURES = ["queijo", "borda", "massa", "tabua", "sombra"].map((n) => asset(`/images/texturas/${n}.webp`));
 
 /*
  * Pizza marguerita 3D procedural: tábua, 8 fatias com massa, borda, molho/queijo
@@ -86,41 +90,50 @@ function sliceToppings(index: number, a0: number, a1: number): Topping[] {
   return items;
 }
 
-export function Pizza() {
+interface PizzaProps {
+  /** Chamado se o aparelho não sustentar uma taxa de quadros confortável. */
+  onSlow?: () => void;
+  /** Ignora a checagem de desempenho (?3d=1). */
+  forced?: boolean;
+}
+
+export function Pizza({ onSlow, forced }: PizzaProps) {
   const root = useRef<THREE.Group>(null);
   const slices = useRef<(THREE.Group | null)[]>([]);
   const cheeseLayers = useRef<(THREE.Group | null)[]>([]);
   const toppingLayers = useRef<(THREE.Group | null)[]>([]);
-  const spin = useRef(0);
+  const probe = useRef({ start: 0, frames: 0, done: false });
+  const [cheeseMap, crust, dough, wood, shadow] = useTexture(TEXTURES);
 
   const assets = useMemo(() => {
-    const cheeseMap = cheeseTexture();
+    for (const t of [cheeseMap, crust, dough, wood]) t.colorSpace = THREE.SRGBColorSpace;
     cheeseMap.repeat.set(1 / (2 * R), 1 / (2 * R));
     cheeseMap.offset.set(0.5, 0.5);
-    const crust = crustTexture();
-    const dough = doughTexture();
+    crust.wrapS = THREE.RepeatWrapping;
+    dough.wrapS = dough.wrapT = THREE.RepeatWrapping;
     dough.repeat.set(0.6, 0.6);
-    const wood = woodTexture();
+    for (const t of [cheeseMap, crust, dough, wood, shadow]) t.needsUpdate = true;
 
+    // Somente MeshStandard/Basic: shaders mais leves (abre e roda mais rápido em celulares)
     const materials = {
       dough: new THREE.MeshStandardMaterial({ map: dough, roughness: 0.92, color: "#f0c58a" }),
-      cheese: new THREE.MeshPhysicalMaterial({ map: cheeseMap, bumpMap: cheeseMap, bumpScale: 1.2, roughness: 0.58, clearcoat: 0.25, clearcoatRoughness: 0.6 }),
+      cheese: new THREE.MeshStandardMaterial({ map: cheeseMap, bumpMap: cheeseMap, bumpScale: 1.2, roughness: 0.55 }),
       crust: new THREE.MeshStandardMaterial({ map: crust, roughness: 0.86, bumpMap: crust, bumpScale: 2.2 }),
-      tomato: new THREE.MeshPhysicalMaterial({ color: "#a32314", roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.4 }),
-      tomatoDark: new THREE.MeshPhysicalMaterial({ color: "#6f170d", roughness: 0.5, clearcoat: 0.25 }),
+      tomato: new THREE.MeshStandardMaterial({ color: "#a32314", roughness: 0.32 }),
+      tomatoDark: new THREE.MeshStandardMaterial({ color: "#6f170d", roughness: 0.4 }),
       basil: new THREE.MeshStandardMaterial({ color: "#2e4c1d", roughness: 0.5, side: THREE.DoubleSide }),
       basilDark: new THREE.MeshStandardMaterial({ color: "#1e2f14", roughness: 0.6, side: THREE.DoubleSide }),
-      mozz: new THREE.MeshPhysicalMaterial({ color: "#f5e3b8", roughness: 0.5, sheen: 0.5, sheenColor: new THREE.Color("#fff3d6") }),
+      mozz: new THREE.MeshStandardMaterial({ color: "#f5e3b8", roughness: 0.5 }),
       board: new THREE.MeshStandardMaterial({ map: wood, roughness: 0.78 }),
-      shadow: new THREE.MeshBasicMaterial({ map: shadowTexture(), transparent: true, depthWrite: false, toneMapped: false }),
+      shadow: new THREE.MeshBasicMaterial({ map: shadow, transparent: true, depthWrite: false, toneMapped: false }),
     };
 
     const geos = {
-      tomato: new THREE.SphereGeometry(0.13, 28, 18),
-      mozz: new THREE.SphereGeometry(0.21, 24, 14),
+      tomato: new THREE.SphereGeometry(0.13, 18, 12),
+      mozz: new THREE.SphereGeometry(0.21, 16, 10),
       leaf: leafGeometry(),
-      cap: new THREE.SphereGeometry(0.19, 18, 12),
-      board: new THREE.CylinderGeometry(R + 0.34, R + 0.38, 0.12, 96),
+      cap: new THREE.SphereGeometry(0.19, 14, 10),
+      board: new THREE.CylinderGeometry(R + 0.34, R + 0.38, 0.12, 64),
       shadow: new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2),
     };
 
@@ -134,8 +147,8 @@ export function Pizza() {
         bevelEnabled: true,
         bevelThickness: 0.015,
         bevelSize: 0.015,
-        bevelSegments: 2,
-        curveSegments: 20,
+        bevelSegments: 1,
+        curveSegments: 14,
       });
       base.rotateX(-Math.PI / 2);
 
@@ -144,13 +157,13 @@ export function Pizza() {
         bevelEnabled: true,
         bevelThickness: 0.012,
         bevelSize: 0.014,
-        bevelSegments: 2,
-        curveSegments: 20,
+        bevelSegments: 1,
+        curveSegments: 14,
       });
       cheese.rotateX(-Math.PI / 2);
       cheese.translate(0, BASE_H, 0);
 
-      const crust = new THREE.TorusGeometry(CRUST_R, 0.19, 18, 30, a1 - a0);
+      const crust = new THREE.TorusGeometry(CRUST_R, 0.19, 12, 20, a1 - a0);
       crust.rotateZ(a0);
       crust.rotateX(-Math.PI / 2);
       crust.scale(1, 0.78, 1);
@@ -166,17 +179,34 @@ export function Pizza() {
     });
 
     return { materials, geos, parts };
-  }, []);
+  }, [cheeseMap, crust, dough, wood, shadow]);
 
   useFrame((state, delta) => {
     const g = root.current;
     if (!g) return;
-    const { size, viewport, clock } = state;
-    const t = clock.elapsedTime;
+    const { size, viewport, invalidate } = state;
     const { enter, story, pointerX, pointerY, reduceMotion } = experience;
     const mobile = size.width < 768;
     const tablet = size.width < 1024;
     const dt = Math.min(delta, 0.05);
+
+    // ---- checagem de desempenho: ignora os primeiros quadros (compilação/envio de texturas)
+    // e mede a taxa real nos ~12 seguintes; se o aparelho não sustentar ~24 fps, troca o 3D
+    // pela fotografia (o site continua fluido em qualquer aparelho)
+    const pr = probe.current;
+    if (!pr.done) {
+      const now = performance.now();
+      pr.frames += 1;
+      if (pr.frames === 4) pr.start = now;
+      const measured = pr.frames - 4;
+      const elapsed = pr.start ? now - pr.start : 0;
+      if (pr.start && (measured >= 12 || elapsed > 1500)) {
+        pr.done = true;
+        const fps = measured / Math.max(0.001, elapsed / 1000);
+        document.documentElement.dataset.fps3d = String(Math.round(fps)); // diagnóstico
+        if (!forced && fps < 24) onSlow?.();
+      } else invalidate();
+    }
 
     // ---- pose do hero e da seção experiência (responsivo)
     const hero = mobile
@@ -191,39 +221,35 @@ export function Pizza() {
         : { x: viewport.width * 0.225, y: -0.22, s: Math.min(0.7, viewport.width * 0.086) };
 
     const k = range(enter, 0.15, 1);
-    const bob = reduceMotion ? 0 : Math.sin(t * 0.9) * 0.035 * (1 - k);
     if (tablet) {
       // Layout empilhado: no hero a pizza sobe junto com a página (sem ficar atrás do texto)
       // e reaparece, crescendo, quando a seção "experiência" fixa na tela.
       const inHero = enter < 1;
       const follow = experience.scrollPx * (viewport.height / Math.max(1, experience.vh));
       g.position.x = 0;
-      g.position.y = inHero ? hero.y + follow + bob : exp.y;
+      g.position.y = inHero ? hero.y + follow : exp.y;
       const ts = inHero ? hero.s * (1 - range(enter, 0.3, 0.8)) : exp.s * range(story, 0, 0.08);
       g.scale.setScalar(Math.max(0.0001, ts));
     } else {
-      const tx = THREE.MathUtils.lerp(hero.x, exp.x, k);
-      const ty = THREE.MathUtils.lerp(hero.y, exp.y, k) + bob;
-      const ts = THREE.MathUtils.lerp(hero.s, exp.s, k);
-      g.position.x = THREE.MathUtils.damp(g.position.x, tx, 4, dt);
-      g.position.y = THREE.MathUtils.damp(g.position.y, ty, 4, dt);
-      g.scale.setScalar(THREE.MathUtils.damp(g.scale.x, ts, 4, dt));
+      g.position.x = THREE.MathUtils.damp(g.position.x, THREE.MathUtils.lerp(hero.x, exp.x, k), 5, dt);
+      g.position.y = THREE.MathUtils.damp(g.position.y, THREE.MathUtils.lerp(hero.y, exp.y, k), 5, dt);
+      g.scale.setScalar(THREE.MathUtils.damp(g.scale.x, THREE.MathUtils.lerp(hero.s, exp.s, k), 5, dt));
     }
 
-    // ---- etapas da história
+    // ---- etapas da história (tudo guiado pela rolagem: parado = zero processamento)
     const cheeseLift = range(story, 0.1, 0.22) - range(story, 0.36, 0.5);
     const toppingLift = range(story, 0.1, 0.22) - range(story, 0.56, 0.7);
     const explode = range(story, 0.74, 0.86);
     const serve = range(story, 0.8, 0.94);
 
-    // rotação: gira sozinha no hero; na história, para de frente
-    if (!reduceMotion) spin.current += dt * 0.18 * (1 - k);
-    const settled = Math.round(spin.current / (Math.PI * 2)) * Math.PI * 2 + (reduceMotion ? 0 : Math.sin(t * 0.35) * 0.12);
-    const rotY = THREE.MathUtils.lerp(spin.current, settled, k);
+    // rotação: gira conforme a rolagem do hero; na história, fica de frente
+    const heroRot = -0.35 + enter * 1.4;
+    const storyRot = reduceMotion ? 0 : 0.22 * Math.sin(story * Math.PI);
     const tilt = !mobile && !reduceMotion;
+    const rotY = THREE.MathUtils.lerp(heroRot, storyRot, k) + (tilt ? pointerX * 0.16 : 0);
     const rx = THREE.MathUtils.lerp(0.5, 0.1 + 0.32 * explode, k) + (tilt ? pointerY * 0.1 : 0);
-    g.rotation.x = THREE.MathUtils.damp(g.rotation.x, rx, 5, dt);
-    g.rotation.y = THREE.MathUtils.damp(g.rotation.y, rotY + (tilt ? pointerX * 0.16 : 0), 5, dt);
+    g.rotation.x = THREE.MathUtils.damp(g.rotation.x, rx, 6, dt);
+    g.rotation.y = THREE.MathUtils.damp(g.rotation.y, rotY, 6, dt);
 
     assets.parts.forEach((p, i) => {
       const slice = slices.current[i];
@@ -233,11 +259,14 @@ export function Pizza() {
       const out = explode * (mobile ? 0.28 : 0.4) + (i === LIFT_SLICE ? serve * (mobile ? 0.5 : 0.75) : 0);
       slice.position.set(p.dir[0] * out, i === LIFT_SLICE ? serve * 0.5 : 0, p.dir[1] * out);
       slice.rotation.x = i === LIFT_SLICE ? -serve * 0.25 : 0;
-      const wobble = reduceMotion ? 0 : Math.sin(t * 1.4 + i) * 0.03;
-      cheese.position.y = cheeseLift * 0.7 + cheeseLift * wobble;
-      tops.position.y = toppingLift * 1.45 + toppingLift * wobble * 2;
-      tops.rotation.y = toppingLift * (reduceMotion ? 0 : Math.sin(t * 0.6 + i) * 0.08);
+      const wobble = reduceMotion ? 0 : Math.sin(story * 26 + i) * 0.04;
+      cheese.position.y = cheeseLift * (0.7 + wobble);
+      tops.position.y = toppingLift * (1.45 + wobble * 2);
+      tops.rotation.y = toppingLift * wobble * 2;
     });
+
+    // continua desenhando só enquanto houver movimento (rolagem/mouse recentes)
+    if (performance.now() < experience.until) invalidate();
   });
 
   const { materials: m, geos, parts } = assets;

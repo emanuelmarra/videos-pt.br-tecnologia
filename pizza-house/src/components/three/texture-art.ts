@@ -1,5 +1,9 @@
-import * as THREE from "three";
-
+/**
+ * Arte das texturas da pizza 3D, desenhada em <canvas>.
+ * NÃO roda no site: `npm run textures` executa estas funções uma vez e salva
+ * os resultados em public/images/texturas/*.webp (o site só baixa as imagens,
+ * sem gastar processamento do aparelho para desenhá-las).
+ */
 /** Gerador pseudoaleatório determinístico (as texturas saem sempre iguais). */
 function random(seed: number) {
   let s = seed;
@@ -22,19 +26,11 @@ function blob(g: CanvasRenderingContext2D, x: number, y: number, rx: number, ry:
   g.fill();
 }
 
-function finish(c: HTMLCanvasElement, srgb = true) {
-  const t = new THREE.CanvasTexture(c);
-  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 4;
-  t.needsUpdate = true;
-  return t;
-}
-
 /**
  * Molho + queijo gratinado, vista de cima. A textura cobre o quadrado [-R, R]
  * do plano da pizza; o queijo ocupa até `cheeseRatio` do raio.
  */
-export function cheeseTexture(size = 1024, cheeseRatio = 0.88) {
+export function cheeseArt(size = 1024, cheeseRatio = 0.88) {
   const [c, g] = canvas(size);
   const rand = random(17);
   const cx = size / 2;
@@ -109,11 +105,11 @@ export function cheeseTexture(size = 1024, cheeseRatio = 0.88) {
     g.fillRect(rand() * size, rand() * size, 1 + rand() * 2.2, 1 + rand() * 1.6);
   }
   g.restore();
-  return finish(c);
+  return c;
 }
 
 /** Sombra suave (gradiente radial) para o chão sob a tábua — bem mais leve que sombras em tempo real. */
-export function shadowTexture() {
+export function shadowArt() {
   const [c, g] = canvas(256);
   const rg = g.createRadialGradient(128, 128, 0, 128, 128, 128);
   rg.addColorStop(0, "rgba(0,0,0,0.75)");
@@ -121,11 +117,11 @@ export function shadowTexture() {
   rg.addColorStop(1, "rgba(0,0,0,0)");
   g.fillStyle = rg;
   g.fillRect(0, 0, 256, 256);
-  return finish(c, false);
+  return c;
 }
 
 /** Borda da massa (UV do toro): topo mais tostado, parte de baixo mais clara. */
-export function crustTexture() {
+export function crustArt() {
   const [c, g] = canvas(1024, 256);
   const rand = random(29);
   for (let y = 0; y < 256; y++) {
@@ -155,13 +151,11 @@ export function crustTexture() {
     g.fillStyle = `rgba(255, 245, 225, ${0.15 + rand() * 0.3})`;
     g.fillRect(rand() * 1024, rand() * 256, 1.5, 1.5);
   }
-  const t = finish(c);
-  t.wrapS = THREE.RepeatWrapping;
-  return t;
+  return c;
 }
 
 /** Massa (base e laterais). */
-export function doughTexture() {
+export function doughArt() {
   const [c, g] = canvas(512);
   const rand = random(41);
   g.fillStyle = "#dcae6c";
@@ -170,13 +164,11 @@ export function doughTexture() {
     g.fillStyle = rand() > 0.5 ? `rgba(255, 240, 210, ${rand() * 0.35})` : `rgba(150, 95, 40, ${rand() * 0.25})`;
     blob(g, rand() * 512, rand() * 512, 1 + rand() * 4, 1 + rand() * 3, rand() * 3);
   }
-  const t = finish(c);
-  t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  return t;
+  return c;
 }
 
 /** Tábua de madeira redonda (veios lineares, como nas fotos da casa). */
-export function woodTexture() {
+export function woodArt() {
   const [c, g] = canvas(1024);
   const rand = random(53);
   g.fillStyle = "#7a4a28";
@@ -208,5 +200,5 @@ export function woodTexture() {
       g.stroke();
     }
   }
-  return finish(c);
+  return c;
 }

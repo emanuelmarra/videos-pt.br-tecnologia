@@ -14,6 +14,8 @@ export const experience = {
   /** rolagem atual (px) e altura da janela — usados no layout empilhado (celular/tablet) */
   scrollPx: 0,
   vh: 1,
+  /** até quando (performance.now) a cena continua desenhando após rolagem/mouse */
+  until: 0,
 };
 
 export const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);

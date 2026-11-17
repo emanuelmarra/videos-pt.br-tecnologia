@@ -11,13 +11,13 @@
     "images": "node scripts/optimize-images.mjs && tsx scripts/build-illustrations.tsx",
     "photos": "python3 scripts/prepare_photos.py && npm run images",
     "illustrations": "tsx scripts/build-illustrations.tsx",
-    "pacote": "NEXT_PUBLIC_RELATIVE_ASSETS=1 next build && node scripts/package-site.mjs && next build"
+    "pacote": "NEXT_PUBLIC_RELATIVE_ASSETS=1 next build && node scripts/package-site.mjs && next build",
+    "textures": "node scripts/build-textures.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
     "framer-motion": "^14.14.0",
-    "lenis": "^1.3.27",
     "lucide-react": "^1.73.0",
     "next": "^16.4.6",
     "react": "^19.3.1",

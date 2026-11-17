@@ -83,7 +83,7 @@ export function Menu() {
 
           {/* Filtros + sabores */}
           <div className="lg:col-span-8">
-            <div className="sticky top-[63px] z-20 -mx-5 mb-8 border-b border-cream/5 bg-ink/90 px-5 py-3 backdrop-blur-xl sm:-mx-8 sm:px-8 lg:static lg:mx-0 lg:mb-10 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+            <div className="sticky top-[63px] z-20 -mx-5 mb-8 border-b border-cream/5 bg-ink px-5 py-3 sm:-mx-8 sm:px-8 lg:static lg:mx-0 lg:mb-10 lg:border-0 lg:bg-transparent lg:p-0">
               <div role="group" aria-label="Filtrar sabores do cardápio" className="flex gap-2 overflow-x-auto scrollbar-none">
                 {categories.map((c) => {
                   const active = filter === c.id;

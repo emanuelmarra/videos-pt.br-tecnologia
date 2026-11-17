@@ -63,9 +63,9 @@ export function Header() {
     <>
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,padding,border-color,backdrop-filter] duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-[background-color,padding,border-color] duration-500",
         scrolled || open
-          ? "border-b border-gold/15 bg-ink/85 py-2.5 backdrop-blur-xl backdrop-saturate-150"
+          ? "border-b border-gold/15 bg-ink/95 py-2.5"
           : "border-b border-transparent bg-transparent py-4 lg:py-6",
       )}
     >
@@ -159,7 +159,6 @@ export function Header() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            data-lenis-prevent=""
             className="bg-wood fixed inset-0 z-40 flex h-[100dvh] flex-col overflow-y-auto px-6 pb-10 pt-28 lg:hidden"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}

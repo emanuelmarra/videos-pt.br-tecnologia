@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { site } from "@/config/site";
-import { smooth } from "@/lib/smooth-scroll";
 
 /** Deslocamento vertical suave (parallax) conforme o elemento atravessa a tela. */
 export function useParallax(ref: RefObject<HTMLElement | null>, distance = 60): MotionValue<number> {
@@ -52,11 +51,9 @@ export function useLockBodyScroll(locked: boolean) {
     const scrollbar = window.innerWidth - html.clientWidth;
     html.style.overflow = "hidden";
     html.style.paddingRight = scrollbar ? `${scrollbar}px` : "";
-    smooth.lenis?.stop();
     return () => {
       html.style.overflow = prev;
       html.style.paddingRight = "";
-      smooth.lenis?.start();
     };
   }, [locked]);
 }

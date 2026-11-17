@@ -12,9 +12,19 @@ const PizzaScene = dynamic(() => import("./PizzaScene"), { ssr: false });
  * hardware (sem renderização por software, comum em máquinas sem placa de vídeo).
  * Use ?3d=1 no endereço para forçar a cena 3D (testes/demonstração).
  */
+const forced3D = () => {
+  try {
+    return new URLSearchParams(window.location.search).get("3d") === "1";
+  } catch {
+    return false;
+  }
+};
+
 function canRun3D() {
   try {
-    if (new URLSearchParams(window.location.search).get("3d") === "1") return true;
+    if (forced3D()) return true;
+    // ?3d=teste: pula a checagem de placa de vídeo, mas mantém a checagem de fluidez
+    if (new URLSearchParams(window.location.search).get("3d") === "teste") return true;
     const nav = navigator as Navigator & { deviceMemory?: number };
     if ((nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) <= 2) return false;
     const c = document.createElement("canvas");
@@ -39,9 +49,11 @@ export function ExperienceBackdrop() {
   const [mode, setMode] = useState<"pending" | "3d" | "photo">("pending");
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(true);
+  const [forced, setForced] = useState(false);
 
   useEffect(() => {
     experience.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setForced(forced3D());
     if (!canRun3D()) {
       setMode("photo");
       return;
@@ -103,7 +115,7 @@ export function ExperienceBackdrop() {
 
       {mode === "3d" && (
         <div className={`absolute inset-0 transition-opacity duration-[1400ms] ease-out ${ready ? "opacity-100" : "opacity-0"}`}>
-          <PizzaScene active={active} onReady={() => setReady(true)} />
+          <PizzaScene active={active} forced={forced} onReady={() => setReady(true)} onSlow={() => setMode("photo")} />
         </div>
       )}
 

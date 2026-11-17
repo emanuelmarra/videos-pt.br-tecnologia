@@ -1,5 +1,4 @@
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Marquee } from "@/components/sections/Marquee";
 import { Story } from "@/components/sections/Story";
 import { ExperienceBackdrop } from "@/components/three/ExperienceBackdrop";
@@ -20,7 +19,6 @@ import { Reviews } from "@/components/sections/Reviews";
 export default function Home() {
   return (
     <>
-      <SmoothScroll />
       <ExperienceBackdrop />
       <Header />
       <main id="conteudo">

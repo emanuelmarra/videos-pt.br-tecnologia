@@ -43,9 +43,9 @@ export function Gallery() {
       if (!el) return;
       const ang = ((((i * STEP + r) % 360) + 540) % 360) - 180;
       const c = Math.cos((ang * Math.PI) / 180);
-      el.style.filter = `brightness(${(0.42 + 0.58 * Math.max(0, c)).toFixed(3)})`;
-      el.style.opacity = c < -0.25 ? "0.28" : "1";
-      el.style.zIndex = String(Math.round((c + 1) * 50));
+      const shade = el.querySelector<HTMLElement>("[data-shade]");
+      if (shade) shade.style.opacity = (0.6 * (1 - Math.max(0, c))).toFixed(3);
+      el.style.opacity = c < -0.25 ? "0.3" : "1";
       if (c > bestCos) {
         bestCos = c;
         best = i;
@@ -149,6 +149,7 @@ export function Gallery() {
                   />
                   <span className="absolute inset-0 bg-linear-to-t from-ink/70 via-transparent to-transparent" aria-hidden="true" />
                   <span className="absolute inset-x-4 bottom-3 font-serif text-lg leading-tight text-cream sm:text-xl">{item.caption}</span>
+                  <span data-shade="" className="pointer-events-none absolute inset-0 bg-espresso opacity-0" aria-hidden="true" />
                 </button>
               </div>
             ))}
@@ -236,7 +237,6 @@ function Lightbox({ index, onClose, onChange }: { index: number | null; onClose:
           role="dialog"
           aria-modal="true"
           aria-label={`Galeria de fotos: ${item.caption}`}
-          data-lenis-prevent=""
           className="fixed inset-0 z-[70] flex flex-col bg-char/95 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
